@@ -1,0 +1,4 @@
+ads
+ads-db-user
+36zpRW-6|Es
+mysql743.umbler.com:41890
