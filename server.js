@@ -12,22 +12,32 @@ const connection = mysql.createConnection({
 })
 
 app.get('/data/:table', async (req, res) => {
-	const { table } = req.params
-	const response = []
+	try {
+		const { table } = req.params
+		const response = []
 
-	connection.query(
-		`SELECT * FROM ${table}`,
-		(error, result, fields) => {
-			result.forEach(row => {
-				const parsedRow = {}
-				Object.keys(row).forEach(key => {
-					parsedRow[key] = row[key]
-				})
-				response.push(parsedRow)
-			})
-			res.json(response)
-		},
-	)
+		connection.query(
+			`SELECT * FROM ${table}`,
+			(error, result, fields) => {
+				if (error) {
+					res.json(error)
+				} else {
+					result.forEach(row => {
+						const parsedRow = {}
+						Object.keys(row).forEach(key => {
+							parsedRow[key] = row[key]
+						})
+						response.push(parsedRow)
+					})
+					res.json(response)
+				}
+			},
+		)
+	} catch (error) {
+		res.json(error)
+	} finally {
+		connection.end()
+	}
 })
 
 app.listen(process.env.PORT || 80, () => {
