@@ -1,7 +1,9 @@
 const express = require('express')
 const mysql = require('mysql2')
+const logger = require('morgan')
 
 const app = express()
+app.use(morgan('dev'))
 
 const pool = mysql.createPool({
 	host: 'mysql743.umbler.com',
